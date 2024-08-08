@@ -8,6 +8,16 @@ public partial class Game : Node
     private CenterContainer _game;
     private int _playersConnected = 0;
 
+    private struct Player
+    {
+        long id = 0;
+        PlayerState state = new();
+
+        public Player()
+        {
+        }
+    }
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -64,6 +74,7 @@ public partial class Game : Node
         if (_playersConnected == 2)
         {
             Rpc(nameof(SendGameState));
+            Rp
         }
     }
 

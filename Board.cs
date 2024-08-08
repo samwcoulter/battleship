@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 public partial class Board : GridContainer
 {
-    private const int GRID_SIZE = 5;
+    public const int GRID_SIZE = 5;
+
     private List<Cell> _cells = new();
+
     public override void _Ready()
     {
         Columns = GRID_SIZE;
@@ -23,8 +25,11 @@ public partial class Board : GridContainer
         }
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
+    {
+    }
+
+    public void ApplyState()
     {
     }
 

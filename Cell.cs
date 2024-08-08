@@ -12,6 +12,7 @@ public partial class Cell : Button
 
     private readonly Texture2D GreySquare = (Texture2D)ResourceLoader.Load("res://assets/element_grey_square.png");
     private readonly Texture2D GreenSquare = (Texture2D)ResourceLoader.Load("res://assets/element_green_square.png");
+    private readonly Texture2D BlueSquare = (Texture2D)ResourceLoader.Load("res://assets/element_blue_square.png");
     private readonly Texture2D RedSquare = (Texture2D)ResourceLoader.Load("res://assets/element_red_square.png");
     private readonly Texture2D YellowSquare = (Texture2D)ResourceLoader.Load("res://assets/element_yellow_square.png");
 
@@ -24,7 +25,7 @@ public partial class Cell : Button
         set {
             _state = value;
             if (_state == State.Empty) Icon = GreySquare;
-            else if (_state == State.Friendly) Icon = GreenSquare;
+            else if (_state == State.Friendly) Icon = BlueSquare;
             else if (_state == State.Hit) Icon = RedSquare;
             else if (_state == State.Missed) Icon = YellowSquare;
         }

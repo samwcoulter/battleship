@@ -7,6 +7,9 @@ public partial class Board : GridContainer
 
     private List<Cell> _cells = new();
 
+    [Export]
+    public bool IsClickable { get; set; } = true;
+
     public override void _Ready()
     {
         Columns = GRID_SIZE;
@@ -35,11 +38,22 @@ public partial class Board : GridContainer
 
     public void OnCellPressed(int x, int y)
     {
-        GetCell(x,y).Status = Cell.State.Hit;
+        if (IsClickable) {
+            GetCell(x,y).Status = Cell.State.Hit;
+        }
     }
 
     public Cell GetCell(int x, int y)
     {
         return _cells[x*GRID_SIZE+y];
+    }
+
+    public void SetState(PlayerState state)
+    {
+        List<Cell.State> l = state.All();
+        for (int i = 0; i < l.Count; i++ )
+        {
+            _cells[i].Status = l[i];
+        }
     }
 }

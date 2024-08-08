@@ -1,22 +1,26 @@
 using Godot;
+using System.Collections.Generic;
 
 public partial class Game : Node
 {
+    private struct Player
+    {
+        public long id;
+        public PlayerState state = new();
+
+        public Player(long playerId)
+        {
+            id = playerId;
+        }
+    }
+
     private const int PORT = 9999;
     private ENetMultiplayerPeer _peer = new(); 
     private CanvasLayer _mainMenu;
     private CenterContainer _game;
-    private int _playersConnected = 0;
-
-    private struct Player
-    {
-        long id = 0;
-        PlayerState state = new();
-
-        public Player()
-        {
-        }
-    }
+    private List<Player> _players = new();
+    private Board _enemy;
+    private Board _self;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -60,6 +64,11 @@ public partial class Game : Node
 
     public void OnJoinButton()
     {
+        PackedScene pScene =  GD.Load<PackedScene>("res://Player.tscn");
+        _game.AddChild(pScene.Instantiate());
+        PlayerScene playerScene = _game.GetNode<PlayerScene>("Player");
+        _self = playerScene.Self();
+        _enemy = playerScene.Enemy();
         _peer.CreateClient("localhost", PORT);
         Multiplayer.ConnectedToServer += OnServerConnected;
         Multiplayer.MultiplayerPeer = _peer;
@@ -70,11 +79,13 @@ public partial class Game : Node
     public void OnPlayerConnected(long id)
     {
         GD.Print($"Player connected {Multiplayer.GetUniqueId()} - {id}");
-        _playersConnected++;
-        if (_playersConnected == 2)
+        _players.Add(new Player(id));
+        if (_players.Count == 2)
         {
-            Rpc(nameof(SendGameState));
-            Rp
+            foreach (Player p in _players)
+            {
+                RpcId(p.id, nameof(SendPlayerState), p.state.Serialize());
+            }
         }
     }
 
@@ -84,8 +95,11 @@ public partial class Game : Node
     }
 
     [Rpc(MultiplayerApi.RpcMode.Authority, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    public void SendGameState()
+    public void SendPlayerState(string state)
     {
         GD.Print($"Hello from server {Multiplayer.GetUniqueId()}");
+        PlayerState p = new();
+        p.Deserialize(state);
+        _self.SetState(p);
     }
 }

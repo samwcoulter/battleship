@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://vfi33i0ci8be"]
+[gd_scene load_steps=3 format=3 uid="uid://vfi33i0ci8be"]
 
 [ext_resource type="PackedScene" uid="uid://c0g52pm1e632m" path="res://Board.tscn" id="1_k000m"]
+[ext_resource type="Script" path="res://PlayerScene.cs" id="1_t6ay8"]
 
 [node name="Player" type="VBoxContainer"]
+script = ExtResource("1_t6ay8")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
@@ -18,3 +20,4 @@ text = "You
 
 [node name="Self" parent="." instance=ExtResource("1_k000m")]
 layout_mode = 2
+IsClickable = false

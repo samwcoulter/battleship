@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 public class PlayerState
 {
     private List<Cell.State> _cells;
+    private const int NUM_SHIPS = 1;
 
     public PlayerState()
     {
@@ -15,7 +17,7 @@ public class PlayerState
 
         System.Random rng = new();
         int placedShip = 0;
-        while (placedShip < 3)
+        while (placedShip < NUM_SHIPS)
         {
             int x = rng.Next(Board.GRID_SIZE);
             int y = rng.Next(Board.GRID_SIZE);
@@ -74,6 +76,19 @@ public class PlayerState
     public string Serialize()
     {
         return System.Text.Json.JsonSerializer.Serialize(_cells);
+    }
+
+    public string SerializeSecret()
+    {
+        List<Cell.State> secretCells = JsonSerializer.Deserialize<List<Cell.State>>(JsonSerializer.Serialize(_cells));
+        for (int i = 0; i < secretCells.Count(); i++)
+        {
+            if (secretCells[i] == Cell.State.Friendly)
+            {
+                secretCells[i] = Cell.State.Empty;
+            }
+        }
+        return System.Text.Json.JsonSerializer.Serialize(secretCells);
     }
 
     public void Deserialize(string data)

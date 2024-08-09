@@ -10,6 +10,10 @@ public partial class Board : GridContainer
     [Export]
     public bool IsClickable { get; set; } = true;
 
+    
+    [Signal]
+    public delegate void OnClickEventHandler(int x, int y);
+
     public override void _Ready()
     {
         Columns = GRID_SIZE;
@@ -39,7 +43,9 @@ public partial class Board : GridContainer
     public void OnCellPressed(int x, int y)
     {
         if (IsClickable) {
-            GetCell(x,y).Status = Cell.State.Hit;
+            // GetCell(x,y).Status = Cell.State.Hit;
+            EmitSignal(SignalName.OnClick, x, y);
+            GetCell(x,y);
         }
     }
 
@@ -54,6 +60,10 @@ public partial class Board : GridContainer
         for (int i = 0; i < l.Count; i++ )
         {
             _cells[i].Status = l[i];
+            if (_cells[i].Status != Cell.State.Empty)
+            {
+                _cells[i].Disabled = true;
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text.Json;
 public class PlayerState
 {
     private List<Cell.State> _cells;
-    private const int NUM_SHIPS = 1;
+    private const int NUM_SHIPS = 2;
 
     public PlayerState()
     {

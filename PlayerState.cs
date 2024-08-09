@@ -14,8 +14,8 @@ public class PlayerState
         }
 
         System.Random rng = new();
-        bool placedShip = false;
-        while (placedShip == false)
+        int placedShip = 0;
+        while (placedShip < 3)
         {
             int x = rng.Next(Board.GRID_SIZE);
             int y = rng.Next(Board.GRID_SIZE);
@@ -45,13 +45,16 @@ public class PlayerState
                     foreach ((int, int) c in l)
                     {
                         SetCell(c.Item1, c.Item2, Cell.State.Friendly);
+                        Health++;
                     }
-                    placedShip = true;
+                    placedShip++;
                     break;
                 }
             }
         }
     }
+
+    public int Health { get; set; } = 0;
 
     public Cell.State GetCell(int x, int y)
     {

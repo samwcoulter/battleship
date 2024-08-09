@@ -21,4 +21,14 @@ public partial class PlayerScene : VBoxContainer
         {
             return GetNode<Board>("Enemy");
         }
+
+        public Label TurnLabel()
+        {
+            return GetNode<Label>("TurnLabel");
+        }
+
+        public Label HealthLabel()
+        {
+            return GetNode<Label>("HealthLabel");
+        }
 }

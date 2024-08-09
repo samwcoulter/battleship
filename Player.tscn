@@ -6,12 +6,21 @@
 [node name="Player" type="VBoxContainer"]
 script = ExtResource("1_t6ay8")
 
+[node name="TurnLabel" type="Label" parent="."]
+layout_mode = 2
+text = "Enemy Turn!"
+
+[node name="HealthLabel" type="Label" parent="."]
+layout_mode = 2
+text = "0"
+
 [node name="Label" type="Label" parent="."]
 layout_mode = 2
 text = "Enemy"
 
 [node name="Enemy" parent="." instance=ExtResource("1_k000m")]
 layout_mode = 2
+IsClickable = false
 
 [node name="Label2" type="Label" parent="."]
 layout_mode = 2
